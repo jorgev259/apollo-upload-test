@@ -10,6 +10,8 @@ import ignoreStream from "./ignoreStream.mjs";
 import Upload from "./Upload.mjs";
 const { Readable } = require('stream')
 
+const noop = () => {};
+
 /** @typedef {import("./GraphQLUpload.mjs").default} GraphQLUpload */
 
 /**
@@ -34,7 +36,7 @@ export default function processRequest(
 ) {
   return new Promise((resolve, reject) => {
     const request = Readable.fromWeb(incomingRequest.body)
-    request.headers = Object.fromEntries(incomingRequest.headers.entries())
+    const headers = Object.fromEntries(incomingRequest.headers.entries())
 
     /** @type {boolean} */
     let released;
@@ -60,7 +62,7 @@ export default function processRequest(
     let map;
 
     const parser = busboy({
-      headers: request.headers,
+      headers,
       defParamCharset: "utf8",
       limits: {
         fieldSize: maxFieldSize,
@@ -403,9 +405,9 @@ export default function processRequest(
  * Processes an incoming
  * [GraphQL multipart request](https://github.com/jaydenseric/graphql-multipart-request-spec).
  * @callback ProcessRequestFunction
- * @param {import("next").IncomingMessage} request
+ * @param {import("next").NextApiRequest} request
  *   [Node.js HTTP server request instance](https://nodejs.org/api/http.html#http_class_http_incomingmessage).
- * @param {import("node:http").ServerResponse} response
+ * @param {import("next").NextApiResponse} response
  *   [Node.js HTTP server response instance](https://nodejs.org/api/http.html#http_class_http_serverresponse).
  * @param {ProcessRequestOptions} [options] Options.
  * @returns {Promise<

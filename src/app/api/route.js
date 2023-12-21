@@ -34,13 +34,27 @@ const server = new ApolloServer({
 
 const handler = startServerAndCreateNextHandler(server, {
   context: async (req, res) => {
-    const contentType = req.headers.get('content-type')
+    /* const contentType = req.headers.get('content-type')
 
     if (contentType && contentType.includes('multipart/form-data')) {
       const body = await processRequest(req, res, { environment: 'next' })
       console.log(body)
-    }
+    } */
+
+    return {}
   }
 })
 
-export { handler as GET, handler as POST }
+export async function POST (req, res) {
+  const contentType = req.headers.get('content-type')
+  if (contentType && contentType.includes('multipart/form-data')) {
+    const fileRequest = req.clone()
+    const body = await processRequest(fileRequest, res)
+
+    console.log(body)
+  }
+
+  return handler(req, res)
+}
+
+export { handler as GET }
