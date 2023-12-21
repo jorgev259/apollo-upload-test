@@ -15,14 +15,14 @@
     "@as-integrations/next": "^3.0.0",
     "apollo-upload-client": "^18.0.1",
     "form-serialize": "^0.7.2",
-    "graphql-upload": "^16.0.2",
-    "graphql-upload-minimal": "^1.5.5",
+    "graphql-upload-minimal": "github:jorgev259/graphql-upload-minimal",
     "next": "^14.0.4",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-next": "14.0.4"
+    "eslint-config-next": "14.0.4",
+    "eslint-config-standard": "^17.1.0"
   }
 }
